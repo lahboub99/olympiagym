@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Olympia Gym Fès</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;500;600;700&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --green: #7FFF00;
+      --green-dim: #5ecc00;
+      --black: #080808;
+      --dark: #0f0f0f;
+      --card: #141414;
+      --border: #222;
+      --text: #e8e8e8;
+      --muted: #888;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--text);
+      font-family: 'Barlow', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 5%;
+      background: rgba(8,8,8,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(127,255,0,0.08);
+      transition: all 0.3s;
+    }
+    .logo {
+      display: flex; align-items: center; gap: 10px;
+    }
+    .logo-icon {
+      width: 42px; height: 42px;
+      background: var(--green);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Bebas Neue'; font-size: 20px; color: #000;
+      letter-spacing: -1px;
+    }
+    .logo-text { font-family: 'Bebas Neue'; font-size: 22px; letter-spacing: 2px; color: #fff; }
+    .logo-text span { color: var(--green); }
+
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a {
+      font-family: 'Barlow Condensed'; font-size: 15px; font-weight: 600;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--muted); text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--green); }
+
+    .nav-cta {
+      background: var(--green); color: #000;
+      font-family: 'Barlow Condensed'; font-weight: 700;
+      font-size: 14px; letter-spacing: 1.5px; text-transform: uppercase;
+      padding: 10px 22px; border-radius: 4px; text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .nav-cta:hover { background: #fff; transform: translateY(-1px); }
+
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .hamburger span { width: 26px; height: 2px; background: var(--green); border-radius: 2px; }
+
+    /* ─── HERO ─── */
+    #hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      position: relative; overflow: hidden;
+      padding: 0 5%;
+    }
+
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 60% 80% at 70% 50%, rgba(127,255,0,0.07) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 60% at 20% 80%, rgba(127,255,0,0.04) 0%, transparent 50%),
+        linear-gradient(180deg, #080808 0%, #0a0f06 100%);
+    }
+
+    .hero-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(127,255,0,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(127,255,0,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    .hero-content {
+      position: relative; z-index: 2;
+      max-width: 700px;
+    }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(127,255,0,0.1); border: 1px solid rgba(127,255,0,0.3);
+      padding: 6px 14px; border-radius: 50px;
+      font-family: 'Barlow Condensed'; font-size: 13px; font-weight: 600;
+      letter-spacing: 2px; text-transform: uppercase; color: var(--green);
+      margin-bottom: 28px;
+      animation: fadeUp 0.6s ease both;
+    }
+    .hero-badge::before {
+      content: ''; width: 7px; height: 7px;
+      background: var(--green); border-radius: 50%;
+      animation: pulse 1.5s ease infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(1.4); }
+    }
+
+    h1 {
+      font-family: 'Bebas Neue';
+      font-size: clamp(64px, 11vw, 130px);
+      line-height: 0.92;
+      letter-spacing: 2px;
+      color: #fff;
+      animation: fadeUp 0.7s 0.1s ease both;
+    }
+    h1 .accent { color: var(--green); }
+    h1 .outline {
+      -webkit-text-stroke: 1.5px rgba(255,255,255,0.25);
+      color: transparent;
+    }
+
+    .hero-sub {
+      font-size: 18px; font-weight: 300; color: var(--muted);
+      line-height: 1.7; max-width: 480px;
+      margin: 24px 0 40px;
+      animation: fadeUp 0.7s 0.2s ease both;
+    }
+
+    .hero-actions {
+      display: flex; gap: 14px; flex-wrap: wrap;
+      animation: fadeUp 0.7s 0.3s ease both;
+    }
+
+    .btn-primary {
+      background: var(--green); color: #000;
+      font-family: 'Barlow Condensed'; font-weight: 700;
+      font-size: 15px; letter-spacing: 2px; text-transform: uppercase;
+      padding: 15px 32px; border-radius: 4px; text-decoration: none;
+      transition: all 0.2s; display: inline-block;
+    }
+    .btn-primary:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 8px 30px rgba(127,255,0,0.2); }
+
+    .btn-outline {
+      border: 1px solid var(--border); color: var(--text);
+      font-family: 'Barlow Condensed'; font-weight: 600;
+      font-size: 15px; letter-spacing: 2px; text-transform: uppercase;
+      padding: 15px 32px; border-radius: 4px; text-decoration: none;
+      transition: all 0.2s; display: inline-block;
+    }
+    .btn-outline:hover { border-color: var(--green); color: var(--green); }
+
+    .hero-stats {
+      display: flex; gap: 40px; margin-top: 60px;
+      animation: fadeUp 0.7s 0.4s ease both;
+    }
+    .stat-num {
+      font-family: 'Bebas Neue'; font-size: 42px; color: var(--green); line-height: 1;
+    }
+    .stat-label {
+      font-size: 12px; font-weight: 500; color: var(--muted);
+      letter-spacing: 1.5px; text-transform: uppercase; margin-top: 4px;
+    }
+
+    .hero-image {
+      position: absolute; right: 0; bottom: 0; top: 0;
+      width: 45%;
+      background: linear-gradient(90deg, var(--black) 0%, transparent 30%),
+                  url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=900&q=80') center/cover no-repeat;
+      opacity: 0.5;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── SECTION BASE ─── */
+    section { padding: 100px 5%; }
+    .section-label {
+      font-family: 'Barlow Condensed'; font-size: 12px; font-weight: 700;
+      letter-spacing: 3px; text-transform: uppercase;
+      color: var(--green); margin-bottom: 12px;
+    }
+    .section-title {
+      font-family: 'Bebas Neue'; font-size: clamp(40px, 6vw, 72px);
+      line-height: 0.95; color: #fff; margin-bottom: 16px;
+    }
+    .section-sub {
+      font-size: 16px; color: var(--muted); line-height: 1.7;
+      max-width: 480px;
+    }
+
+    /* ─── ABOUT ─── */
+    #about { background: var(--dark); }
+    .about-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
+      align-items: center; margin-top: 60px;
+    }
+    .about-img {
+      position: relative; border-radius: 8px; overflow: hidden;
+    }
+    .about-img img {
+      width: 100%; height: 500px; object-fit: cover;
+      filter: grayscale(20%);
+    }
+    .about-img::after {
+      content: '';
+      position: absolute; inset: 0;
+      border: 1px solid rgba(127,255,0,0.2);
+      border-radius: 8px;
+    }
+    .about-img-badge {
+      position: absolute; bottom: 24px; left: 24px;
+      background: var(--green); color: #000;
+      font-family: 'Barlow Condensed'; font-weight: 700;
+      font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase;
+      padding: 8px 16px; border-radius: 4px;
+    }
+    .about-features { display: flex; flex-direction: column; gap: 20px; margin-top: 36px; }
+    .about-feat {
+      display: flex; align-items: flex-start; gap: 14px;
+      padding: 18px; background: rgba(127,255,0,0.04);
+      border: 1px solid var(--border); border-radius: 6px;
+      transition: border-color 0.2s;
+    }
+    .about-feat:hover { border-color: rgba(127,255,0,0.3); }
+    .feat-icon {
+      width: 38px; height: 38px; min-width: 38px;
+      background: rgba(127,255,0,0.12); border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+    }
+    .feat-title { font-family: 'Barlow Condensed'; font-weight: 700; font-size: 16px; letter-spacing: 0.5px; margin-bottom: 4px; }
+    .feat-desc { font-size: 14px; color: var(--muted); line-height: 1.5; }
+
+    /* ─── SERVICES ─── */
+    #services { background: var(--black); }
+    .services-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
+      margin-top: 60px; border: 1px solid var(--border); border-radius: 8px; overflow: hidden;
+    }
+    .service-card {
+      padding: 40px 32px;
+      background: var(--card);
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      transition: background 0.25s;
+      position: relative; overflow: hidden;
+    }
+    .service-card:hover { background: #1a1a1a; }
+    .service-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0;
+      height: 2px; background: var(--green);
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.3s;
+    }
+    .service-card:hover::before { transform: scaleX(1); }
+    .service-num {
+      font-family: 'Bebas Neue'; font-size: 52px; color: rgba(127,255,0,0.1);
+      line-height: 1; margin-bottom: 16px;
+    }
+    .service-icon { font-size: 32px; margin-bottom: 16px; }
+    .service-title {
+      font-family: 'Barlow Condensed'; font-weight: 700; font-size: 20px;
+      letter-spacing: 0.5px; margin-bottom: 10px; color: #fff;
+    }
+    .service-desc { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+    /* ─── PRICING ─── */
+    #pricing { background: var(--dark); }
+    .pricing-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+      margin-top: 60px;
+    }
+    .pricing-card {
+      border: 1px solid var(--border); border-radius: 8px;
+      padding: 40px 32px; position: relative;
+      background: var(--card);
+      transition: transform 0.25s, border-color 0.25s;
+    }
+    .pricing-card:hover { transform: translateY(-4px); border-color: rgba(127,255,0,0.3); }
+    .pricing-card.featured {
+      border-color: var(--green);
+      background: linear-gradient(160deg, rgba(127,255,0,0.07) 0%, var(--card) 60%);
+    }
+    .popular-badge {
+      position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+      background: var(--green); color: #000;
+      font-family: 'Barlow Condensed'; font-weight: 700;
+      font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+      padding: 4px 16px; border-radius: 50px;
+    }
+    .plan-name {
+      font-family: 'Barlow Condensed'; font-weight: 700; font-size: 14px;
+      letter-spacing: 3px; text-transform: uppercase; color: var(--muted);
+      margin-bottom: 16px;
+    }
+    .plan-price {
+      font-family: 'Bebas Neue'; font-size: 64px; line-height: 1;
+      color: #fff; margin-bottom: 4px;
+    }
+    .plan-price span { font-size: 24px; color: var(--muted); }
+    .plan-period { font-size: 13px; color: var(--muted); margin-bottom: 28px; }
+    .plan-features { list-style: none; margin-bottom: 32px; }
+    .plan-features li {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 14px; color: var(--text);
+      padding: 9px 0; border-bottom: 1px solid var(--border);
+    }
+    .plan-features li::before { content: '✓'; color: var(--green); font-weight: 700; font-size: 13px; }
+    .plan-features li.na { color: var(--muted); }
+    .plan-features li.na::before { content: '—'; color: var(--border); }
+
+    /* ─── SCHEDULE ─── */
+    #schedule { background: var(--black); }
+    .schedule-header {
+      display: flex; justify-content: space-between; align-items: flex-end;
+      flex-wrap: wrap; gap: 20px; margin-bottom: 40px;
+    }
+    .hours-block {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;
+      margin-top: 60px;
+    }
+    .hour-item {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 18px 24px;
+      background: var(--card); border: 1px solid var(--border); border-radius: 6px;
+      transition: border-color 0.2s;
+    }
+    .hour-item:hover { border-color: rgba(127,255,0,0.3); }
+    .hour-day {
+      font-family: 'Barlow Condensed'; font-weight: 700; font-size: 15px;
+      letter-spacing: 1px; text-transform: uppercase;
+    }
+    .hour-time { color: var(--green); font-weight: 600; font-size: 15px; }
+
+    /* ─── CONTACT ─── */
+    #contact { background: var(--dark); }
+    .contact-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
+      margin-top: 60px;
+    }
+    .contact-info { display: flex; flex-direction: column; gap: 24px; }
+    .contact-item {
+      display: flex; align-items: flex-start; gap: 16px;
+      padding: 22px; background: var(--card); border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+    .contact-icon {
+      width: 44px; height: 44px; min-width: 44px;
+      background: rgba(127,255,0,0.1); border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+    }
+    .contact-label {
+      font-family: 'Barlow Condensed'; font-weight: 700; font-size: 12px;
+      letter-spacing: 2px; text-transform: uppercase; color: var(--green); margin-bottom: 4px;
+    }
+    .contact-value { font-size: 15px; color: var(--text); }
+
+    .contact-form { display: flex; flex-direction: column; gap: 16px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .contact-form input,
+    .contact-form textarea,
+    .contact-form select {
+      width: 100%;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 6px; padding: 14px 18px;
+      font-family: 'Barlow'; font-size: 15px; color: var(--text);
+      outline: none; transition: border-color 0.2s;
+    }
+    .contact-form input:focus,
+    .contact-form textarea:focus,
+    .contact-form select:focus { border-color: var(--green); }
+    .contact-form textarea { resize: vertical; min-height: 120px; }
+    .contact-form select option { background: var(--card); }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: #050505; border-top: 1px solid var(--border);
+      padding: 60px 5% 30px;
+    }
+    .footer-grid {
+      display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 60px;
+      margin-bottom: 48px;
+    }
+    .footer-brand p { font-size: 14px; color: var(--muted); line-height: 1.8; margin-top: 16px; max-width: 300px; }
+    .footer-title {
+      font-family: 'Barlow Condensed'; font-weight: 700; font-size: 13px;
+      letter-spacing: 2px; text-transform: uppercase; color: var(--green);
+      margin-bottom: 20px;
+    }
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-links a { font-size: 14px; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--green); }
+    .footer-bottom {
+      border-top: 1px solid var(--border); padding-top: 24px;
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 13px; color: var(--muted); flex-wrap: wrap; gap: 12px;
+    }
+    .footer-bottom span { color: var(--green); }
+
+    /* ─── DIVIDER ─── */
+    .divider {
+      height: 1px; background: linear-gradient(90deg, transparent, rgba(127,255,0,0.3), transparent);
+      margin: 0;
+    }
+
+    /* ─── SCROLL REVEAL ─── */
+    .reveal {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ─── MOBILE ─── */
+    @media (max-width: 900px) {
+      .nav-links, .nav-cta { display: none; }
+      .hamburger { display: flex; }
+      .about-grid, .contact-grid, .pricing-grid { grid-template-columns: 1fr; }
+      .services-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+      .hero-image { opacity: 0.2; width: 100%; }
+      .hero-stats { gap: 24px; flex-wrap: wrap; }
+      .hours-block { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="logo">
+      <div class="logo-icon">OG</div>
+      <div class="logo-text">OLYMPIA <span>GYM</span></div>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#about">À Propos</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#pricing">Tarifs</a></li>
+      <li><a href="#schedule">Horaires</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="#pricing" class="nav-cta">Rejoindre</a>
+    <div class="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-image"></div>
+    <div class="hero-content">
+      <div class="hero-badge">Fès, Maroc — Ouvert 7h–23h</div>
+      <h1>
+        FORGE<br>
+        TON<br>
+        <span class="accent">MEILLEUR</span><br>
+        <span class="outline">MOI</span>
+      </h1>
+      <p class="hero-sub">Coaching personnalisé · Musculation · Cardio. La transformation commence ici, à Olympia Gym Fès.</p>
+      <div class="hero-actions">
+        <a href="#pricing" class="btn-primary">Voir les Tarifs</a>
+        <a href="#contact" class="btn-outline">Nous Contacter</a>
+      </div>
+      <div class="hero-stats">
+        <div>
+          <div class="stat-num">7H</div>
+          <div class="stat-label">Ouverture</div>
+        </div>
+        <div>
+          <div class="stat-num">23H</div>
+          <div class="stat-label">Fermeture</div>
+        </div>
+        <div>
+          <div class="stat-num">3</div>
+          <div class="stat-label">Programmes</div>
+        </div>
+        <div>
+          <div class="stat-num">∞</div>
+          <div class="stat-label">Motivation</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="reveal">
+      <div class="section-label">À Propos</div>
+      <div class="section-title">PLUS QU'UN<br>SIMPLE GYM</div>
+      <p class="section-sub">Un espace conçu pour repousser tes limites, avec des équipements de pointe et une ambiance motivante.</p>
+    </div>
+    <div class="about-grid">
+      <div class="about-img reveal">
+        <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80" alt="Olympia Gym" />
+        <div class="about-img-badge">🏆 Olympia Gym Fès</div>
+      </div>
+      <div class="reveal">
+        <p style="font-size:16px; color:var(--muted); line-height:1.8; margin-bottom:32px;">
+          Chez Olympia Gym Fès, nous croyons que chaque transformation commence par une décision. Nos entraîneurs certifiés, nos équipements de qualité professionnelle, et notre communauté soudée sont là pour vous accompagner à chaque étape.
+        </p>
+        <div class="about-features">
+          <div class="about-feat">
+            <div class="feat-icon">🏋️</div>
+            <div>
+              <div class="feat-title">Équipements de Pointe</div>
+              <div class="feat-desc">Matériel professionnel renouvelé régulièrement pour des performances optimales.</div>
+            </div>
+          </div>
+          <div class="about-feat">
+            <div class="feat-icon">👨‍🏫</div>
+            <div>
+              <div class="feat-title">Coachs Certifiés</div>
+              <div class="feat-desc">Des experts passionnés qui créent des programmes adaptés à vos objectifs.</div>
+            </div>
+          </div>
+          <div class="about-feat">
+            <div class="feat-icon">🔥</div>
+            <div>
+              <div class="feat-title">Ambiance Motivante</div>
+              <div class="feat-desc">Une communauté positive qui vous pousse à aller plus loin chaque jour.</div>
+            </div>
+          </div>
+          <div class="about-feat">
+            <div class="feat-icon">🥗</div>
+            <div>
+              <div class="feat-title">Programme Nutrition</div>
+              <div class="feat-desc">Conseils nutritionnels personnalisés pour maximiser vos résultats.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <div class="reveal" style="text-align:center; max-width:600px; margin:0 auto 0;">
+      <div class="section-label">Nos Services</div>
+      <div class="section-title">CE QU'ON OFFRE</div>
+      <p class="section-sub" style="margin:0 auto;">Des programmes sur mesure pour chaque objectif, chaque niveau.</p>
+    </div>
+    <div class="services-grid reveal" style="margin-top:60px;">
+      <div class="service-card">
+        <div class="service-num">01</div>
+        <div class="service-icon">💪</div>
+        <div class="service-title">Musculation</div>
+        <div class="service-desc">Prise de masse, remise en forme, définition musculaire. Programmes individualisés avec suivi régulier.</div>
+      </div>
+      <div class="service-card">
+        <div class="service-num">02</div>
+        <div class="service-icon">🏃</div>
+        <div class="service-title">Cardio & Endurance</div>
+        <div class="service-desc">Perte de poids, amélioration cardio-vasculaire. Tapis, vélos, elliptiques haut de gamme.</div>
+      </div>
+      <div class="service-card">
+        <div class="service-num">03</div>
+        <div class="service-icon">🎯</div>
+        <div class="service-title">Coaching Personnalisé</div>
+        <div class="service-desc">Séances 1-on-1 avec un coach dédié. Objectifs clairs, progression mesurable, résultats garantis.</div>
+      </div>
+      <div class="service-card">
+        <div class="service-num">04</div>
+        <div class="service-icon">🥗</div>
+        <div class="service-title">Nutrition & Diète</div>
+        <div class="service-desc">Plans nutritionnels adaptés à votre corps et à vos objectifs sportifs.</div>
+      </div>
+      <div class="service-card">
+        <div class="service-num">05</div>
+        <div class="service-icon">🧘</div>
+        <div class="service-title">Stretching & Récup</div>
+        <div class="service-desc">Séances de récupération guidées pour optimiser vos performances et éviter les blessures.</div>
+      </div>
+      <div class="service-card">
+        <div class="service-num">06</div>
+        <div class="service-icon">👥</div>
+        <div class="service-title">Cours Collectifs</div>
+        <div class="service-desc">Boot camp, HIIT, circuit training en groupe. Motivation collective et résultats accélérés.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- PRICING -->
+  <section id="pricing">
+    <div class="reveal" style="text-align:center; max-width:600px; margin:0 auto;">
+      <div class="section-label">Tarifs</div>
+      <div class="section-title">INVESTIS EN TOI</div>
+      <p class="section-sub" style="margin:0 auto;">Des abonnements transparents, sans mauvaise surprise.</p>
+    </div>
+    <div class="pricing-grid reveal">
+      <div class="pricing-card">
+        <div class="plan-name">Mensuel</div>
+        <div class="plan-price"><span>MAD </span>250</div>
+        <div class="plan-period">par mois</div>
+        <ul class="plan-features">
+          <li>Accès salle complet</li>
+          <li>Vestiaires & douches</li>
+          <li>Programme de base</li>
+          <li class="na">Coaching personnalisé</li>
+          <li class="na">Programme nutrition</li>
+        </ul>
+        <a href="#contact" class="btn-outline" style="width:100%; text-align:center;">Commencer</a>
+      </div>
+      <div class="pricing-card featured">
+        <div class="popular-badge">⭐ POPULAIRE</div>
+        <div class="plan-name">Trimestriel</div>
+        <div class="plan-price"><span>MAD </span>650</div>
+        <div class="plan-period">pour 3 mois — économisez 100 MAD</div>
+        <ul class="plan-features">
+          <li>Accès salle complet</li>
+          <li>Vestiaires & douches</li>
+          <li>Programme sur mesure</li>
+          <li>2 séances coaching/mois</li>
+          <li class="na">Programme nutrition</li>
+        </ul>
+        <a href="#contact" class="btn-primary" style="width:100%; text-align:center;">Commencer</a>
+      </div>
+      <div class="pricing-card">
+        <div class="plan-name">Annuel</div>
+        <div class="plan-price"><span>MAD </span>2200</div>
+        <div class="plan-period">pour 12 mois — meilleur rapport qualité/prix</div>
+        <ul class="plan-features">
+          <li>Accès salle complet</li>
+          <li>Vestiaires & douches</li>
+          <li>Programme sur mesure</li>
+          <li>Coaching illimité</li>
+          <li>Programme nutrition inclus</li>
+        </ul>
+        <a href="#contact" class="btn-outline" style="width:100%; text-align:center;">Commencer</a>
+      </div>
+    </div>
+    <p style="text-align:center; color:var(--muted); font-size:13px; margin-top:24px;">
+      * Tarifs exacts à confirmer en salle. Contactez-nous pour toute question.
+    </p>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- SCHEDULE -->
+  <section id="schedule">
+    <div class="reveal">
+      <div class="section-label">Horaires</div>
+      <div class="section-title">ON EST LÀ<br>POUR VOUS</div>
+      <p class="section-sub">7 jours sur 7, nous ouvrons tôt et fermons tard pour s'adapter à votre emploi du temps.</p>
+    </div>
+    <div class="hours-block reveal">
+      <div class="hour-item"><span class="hour-day">Lundi</span><span class="hour-time">07:00 – 23:00</span></div>
+      <div class="hour-item"><span class="hour-day">Mardi</span><span class="hour-time">07:00 – 23:00</span></div>
+      <div class="hour-item"><span class="hour-day">Mercredi</span><span class="hour-time">07:00 – 23:00</span></div>
+      <div class="hour-item"><span class="hour-day">Jeudi</span><span class="hour-time">07:00 – 23:00</span></div>
+      <div class="hour-item"><span class="hour-day">Vendredi</span><span class="hour-time">07:00 – 23:00</span></div>
+      <div class="hour-item"><span class="hour-day">Samedi</span><span class="hour-time">07:00 – 23:00</span></div>
+      <div class="hour-item"><span class="hour-day">Dimanche</span><span class="hour-time">07:00 – 23:00</span></div>
+      <div class="hour-item" style="border-color: rgba(127,255,0,0.3);">
+        <span class="hour-day" style="color:var(--green);">Jours Fériés</span>
+        <span class="hour-time">Nous consulter</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="reveal">
+      <div class="section-label">Contact</div>
+      <div class="section-title">PRENONS<br>CONTACT</div>
+      <p class="section-sub">Une question sur un abonnement ? Envie d'essayer ? On vous répond vite.</p>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-info reveal">
+        <div class="contact-item">
+          <div class="contact-icon">📍</div>
+          <div>
+            <div class="contact-label">Localisation</div>
+            <div class="contact-value">Fès, Maroc</div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">📞</div>
+          <div>
+            <div class="contact-label">Téléphone</div>
+            <div class="contact-value">05.32.XX.XX.XX</div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">🕐</div>
+          <div>
+            <div class="contact-label">Horaires</div>
+            <div class="contact-value">7h – 23h, 7j/7</div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">📱</div>
+          <div>
+            <div class="contact-label">Instagram</div>
+            <div class="contact-value">@olympiagymfes</div>
+          </div>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="contact-form">
+          <div class="form-row">
+            <input type="text" placeholder="Prénom" />
+            <input type="text" placeholder="Nom" />
+          </div>
+          <input type="tel" placeholder="Téléphone" />
+          <input type="email" placeholder="Email (optionnel)" />
+          <select>
+            <option value="" disabled selected>Je suis intéressé(e) par...</option>
+            <option>Abonnement Mensuel</option>
+            <option>Abonnement Trimestriel</option>
+            <option>Abonnement Annuel</option>
+            <option>Coaching Personnalisé</option>
+            <option>Cours d'Essai Gratuit</option>
+            <option>Autre Renseignement</option>
+          </select>
+          <textarea placeholder="Votre message (objectifs, questions...)"></textarea>
+          <button class="btn-primary" style="border:none; cursor:pointer; font-size:15px;" onclick="alert('Merci ! Nous vous contacterons bientôt.')">Envoyer le Message →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo">
+          <div class="logo-icon">OG</div>
+          <div class="logo-text">OLYMPIA <span>GYM</span></div>
+        </div>
+        <p>Votre transformation commence par une décision. Venez nous voir à Olympia Gym Fès — coaching, musculation, cardio.</p>
+      </div>
+      <div>
+        <div class="footer-title">Navigation</div>
+        <ul class="footer-links">
+          <li><a href="#about">À Propos</a></li>
+          <li><a href="#services">Nos Services</a></li>
+          <li><a href="#pricing">Tarifs</a></li>
+          <li><a href="#schedule">Horaires</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-title">Infos</div>
+        <ul class="footer-links">
+          <li><a href="#">Fès, Maroc</a></li>
+          <li><a href="#">7h – 23h</a></li>
+          <li><a href="#">@olympiagymfes</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2025 <span>Olympia Gym Fès</span>. Tous droits réservés.</div>
+      <div>Fait avec 💚 pour les champions de Fès</div>
+    </div>
+  </footer>
+
+  <script>
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+      });
+    }, { threshold: 0.1 });
+    reveals.forEach(r => observer.observe(r));
+
+    // Mobile menu placeholder
+    function toggleMenu() {
+      alert('Menu mobile — à connecter avec votre thème WordPress');
+    }
+
+    // Nav shadow on scroll
+    window.addEventListener('scroll', () => {
+      document.querySelector('nav').style.boxShadow =
+        window.scrollY > 50 ? '0 4px 30px rgba(0,0,0,0.5)' : 'none';
+    });
+  </script>
+</body>
+</html>
